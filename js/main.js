@@ -14,19 +14,19 @@ function initPoints()
 {
     let i = 1;
     for (let point in arrayPoints){
-        console.log(arrayPoints[point])
         let left = arrayPoints[point][0];
         let top = arrayPoints[point][1];
-        $('.cont-field').append('<div class="points" id="minus' + i +'" onclick="getPoint('+left +','+ top +' , positive,' + staples + 'minus'+ i + staples +')" style="margin-left: '+ left +'px; margin-top: '+top+'px;"></div>')
+        $('.cont-field').append('<div class="points" id="minus' + i +'" onclick="goPoint('+left +','+ top +' , positive,' + staples + 'minus'+ i + staples +')" style="margin-left: '+ left +'px; margin-top: '+top+'px;"></div>');
+        i++;
     }
-    i++;
+    
     /* $('.cont-field').append('<div class="points" id="minus6" onclick="getPoint(255, -1020, positive,' + staples + 'minus6' + staples +')" style="margin-left: 255px; margin-top: -980px;"></div>');
     $('.cont-field').append('<div class="points" id="minus5" onclick="getPoint(345, -1060, positive,' + staples + 'minus5' + staples +')" style="margin-left: 345px; margin-top: -1020px;"></div>');
     $('.cont-field').append('<div class="points" id="minus4" style="margin-left: 255px; margin-top: -210px;"></div>');
     $('.cont-field').append('<div class="points" id="minus3" style="margin-left: 255px; margin-top: -210px;"></div>'); */
 }
 
-function getPoint(left, top, motion, txtId)
+function goPoint(left, top, motion, txtId)
 {
     let id = txtId.replace(/minus/g, '');
     let idFind;
@@ -34,24 +34,35 @@ function getPoint(left, top, motion, txtId)
     let mrgLeft = $('#' + txtId).css('marginLeft').replace(/px/g, '');
     let mrgTop = $('#' + txtId).css('marginTop').replace(/px/g, '');
     let i = 1;
+    //ишем id элемента с помошью кординат
+    let findLeft = $('.square-limit').css('marginLeft').replace(/px/g,'');
+    let findTop = $('.square-limit').css('marginTop').replace(/px/g,'');;
     for (let point in arrayPoints) {
         let leftin = arrayPoints[point][0];
         let topin = arrayPoints[point][1];
-        if (leftin == left && topin == top) {
+        if (leftin == findLeft && topin == findTop) {
             idFind = i;
         }
         i++;
     }
-    if (idFind > id ) {
+    console.log(idFind + 'id find')
+    if (idFind > id && motion == false) {
         while (id <= idFind) {
             
-            let newLeft = arrayPoints[id][0];
-            let newTop = arrayPoints[id][1];
+            let newLeft = arrayPoints[idFind][0];
+            let newTop = arrayPoints[idFind][1];
             $('.square-limit').animate({'marginTop':newTop + 'px', 'marginLeft': newLeft + 'px'}, 700);
-            id++;
+            idFind--;
         }
-    } else {
-        $('.square-limit').animate({'marginTop':top + 'px', 'marginLeft': left + 'px'}, 700);
+    } else if (idFind < id && motion == true) {
+        while (idFind <= id ) {
+            
+            let newLeft = arrayPoints[idFind][0];
+            let newTop = arrayPoints[idFind][1];
+            $('.square-limit').animate({'marginTop':newTop + 'px', 'marginLeft': newLeft + 'px'}, 700);
+            idFind++;
+        }
+        
     }
     
 }
