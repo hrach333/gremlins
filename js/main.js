@@ -53,7 +53,7 @@ function goPoint(left, top, motion, txtId)
     let oldLeft = $('.square-limit').css('marginLeft').replace(/px/g, '');
     let oldTop = $('.square-limit').css('marginTop').replace(/px/g,'');
     let oldId = findIdPoint(oldLeft, oldTop);
-    console.log('id ' + id + ' localPoint ' + localPoint + '');
+    ///console.log('id ' + id + ' localPoint ' + localPoint + '');
     status = arrayPoints[oldId][2];
     let newStatus = arrayPoints[id][2];
     let newWey = getWey(id, localPoint);
@@ -101,54 +101,36 @@ function getWey(id, localPoint)
     let newWay = [];
     let j = 0;
     let n = 0;
-    if (id > localPoint){
-        while(id > localPoint) {
-            localPoint++;
-            //st-status
-            let st = arrayPoints[localPoint][2];
-            if (st == 'secondary') {
-                sec++;
-                arrStatus[i] = st;
-            }
-            if (st == 'main') {
-                mn++;
-                arrStatus[i] = st;
-            }
-            if (arrStatus[i] == 'secondary' && n == 0) {
-                newWey[j] = localPoint;
-                j++;
-            } else if (arrStatus[i] == 'main' && n == 0) {
-                n++;
-                newWey[j] = localPoint;
-                j++;
-            } else if (arrStatus[i] == 'secondary' && n == 1) {
-                n++;
-                newWey[j] = localPoint;
-                j++;
-            } else if (arrStatus[i] == 'main' && n == 2) {
-                for (let k = 0; k < arrStatus.length; k++) {
-                    if (arrStatus[k] == 'main' && k > 1) {
-                        newWay[k] = localPoint;
-                    }
-                }
-            }
-            i++;
-        }
+    let allWey = [];
+    while (id > localPoint) {
+        localPoint++;
+        let newLeft = arrayPoints[localPoint][0];
+        let newTop = arrayPoints[localPoint][1];
+        let status = arrayPoints[localPoint][2];
+        let oldStatus = arrayPoints[id][2];
+        
+        allWey.push([newLeft, newTop, status]);
     }
+    console.log(allWey);
+    for (wey in allWey) {
+        
+    }
+
 }
 function findIdPoint(left, top)
 {
     for (point in arrayPoints){
+        console.log('find ' + point);
         let newLeft = arrayPoints[point][0];
         let newTop = arrayPoints[point][1];
+        console.log('find ' + newLeft);
         if (left == newLeft && top == newTop)
         {
             return point;
         }
-        else {
-            return null;
-        }
+        
     }
+    return null;
 }
 function start()
 {
