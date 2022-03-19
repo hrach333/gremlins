@@ -93,28 +93,52 @@ function goPoint(left, top, motion, txtId)
 function getWey(id, localPoint)
 {
     //secondary
+    console.log('id: ' + id);
+    //счетчик статусов
+    let st = 0;
     let sec = 0;
-    //main
     let mn = 0;
-    let arrStatus = [];
+    let biginStatus = 0;
+    let endStatus = 0;
     let i = 0;
     let newWay = [];
     let j = 0;
     let n = 0;
     let allWey = [];
+    let oldId = id;
+    let oldStatus = arrayPoints[id][2];
     while (id > localPoint) {
         localPoint++;
         let newLeft = arrayPoints[localPoint][0];
         let newTop = arrayPoints[localPoint][1];
         let status = arrayPoints[localPoint][2];
-        let oldStatus = arrayPoints[id][2];
-        
+        console.log('status ' + status);
+        let newOldStatus = arrayPoints[oldId][2];
+        if (oldStatus == newOldStatus && endStatus == 0) {
+            st++;
+            oldId--;
+        } else {
+            endStatus = st;
+        }
+        if (status == 'main' && sec == 0 && beginStatus == 0) {
+            mn++;
+        } else if (mn >= 1 && status == 'secondary') {
+            beginStatus = mn;
+        }
+        if (status == 'secondary' && mn == 0 && beginStatus == 0) {
+            sec++;
+        } else if (sec >= 1 && status == 'main') {
+            beginSec = sec;
+        }
         allWey.push([newLeft, newTop, status]);
     }
+
+    
+    
     console.log(allWey);
-    for (wey in allWey) {
-        
-    }
+    console.log('endMn ' + endMn);
+    console.log('beginSec ' + beginSec);
+    
 
 }
 function findIdPoint(left, top)
@@ -123,7 +147,7 @@ function findIdPoint(left, top)
         console.log('find ' + point);
         let newLeft = arrayPoints[point][0];
         let newTop = arrayPoints[point][1];
-        console.log('find ' + newLeft);
+        //console.log('find ' + newLeft);
         if (left == newLeft && top == newTop)
         {
             return point;
