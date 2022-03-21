@@ -1,7 +1,7 @@
 let negative = false;
 let positive = true;
 let staples = "'";
-let localPoint = 3;
+let localPoint = 11;
 let status = false;
 let arrayPoints = {
                     21:[400, -420, 'main'], 22:[475, -400, 'main'],
@@ -29,6 +29,9 @@ function moove()
 function initPoints()
 {
     let i = 1;
+    let startLeft = arrayPoints[localPoint][0];
+    let startTop = arrayPoints[localPoint][1];
+    $('.square-limit').css({'marginTop': startTop, 'marginLeft': startLeft});
     for (let point in arrayPoints){
         let left = arrayPoints[point][0];
         let top = arrayPoints[point][1];
@@ -123,11 +126,13 @@ function getWey(id, localPoint)
             mn++;
         } else if (mn >= 1 && status == 'secondary') {
             beginStatus = mn;
+            console.log('gebin main ' + beginStatus)
         }
         if (status == 'secondary' && mn == 0 && beginStatus == 0) {
             sec++;
         } else if (sec >= 1 && status == 'main') {
             beginStatus = sec;
+            console.log('begin secondary ' + beginStatus)
         }
         allWey.push([newLeft, newTop, status]);
         localPoint++;
@@ -144,7 +149,7 @@ function getWey(id, localPoint)
     }
     for (let i = 0; i < allWey.length; i++) {
         let nextStatus = allWey[i][2];
-        if (i + 1 > beginStatus && i < allWey.length - endStatus) {
+        if (i + 1 > beginStatus && i < allWey.length - (endStatus - 1)) {
             if (nextStatus == 'secondary') {
                 delete(allWey[i]);
             }
