@@ -57,6 +57,7 @@ function goPoint(left, top, motion, txtId)
     status = arrayPoints[oldId][2];
     let newStatus = arrayPoints[id][2];
     let newWey = getWey(id, localPoint);
+    
     if (localPoint > id && motion == false) {
         while (id <= localPoint) {
             if (oldId) {
@@ -98,17 +99,15 @@ function getWey(id, localPoint)
     let st = 0;
     let sec = 0;
     let mn = 0;
-    let biginStatus = 0;
+    let beginStatus = 0;
     let endStatus = 0;
-    let i = 0;
     let newWay = [];
-    let j = 0;
-    let n = 0;
     let allWey = [];
     let oldId = id;
     let oldStatus = arrayPoints[id][2];
+    let now = false;
     while (id > localPoint) {
-        localPoint++;
+        
         let newLeft = arrayPoints[localPoint][0];
         let newTop = arrayPoints[localPoint][1];
         let status = arrayPoints[localPoint][2];
@@ -128,22 +127,35 @@ function getWey(id, localPoint)
         if (status == 'secondary' && mn == 0 && beginStatus == 0) {
             sec++;
         } else if (sec >= 1 && status == 'main') {
-            beginSec = sec;
+            beginStatus = sec;
         }
         allWey.push([newLeft, newTop, status]);
+        localPoint++;
     }
 
-    
-    
+    console.log('test')
     console.log(allWey);
-    console.log('endMn ' + endMn);
-    console.log('beginSec ' + beginSec);
-    
-
+    console.log('endStatus ' + endStatus);
+    console.log('beginSec ' + beginStatus);
+    console.log('main ' + mn);
+    console.log('secondary ' + sec);
+    if (sec == allWey.length) {
+        return allWey;
+    }
+    for (let i = 0; i < allWey.length; i++) {
+        let nextStatus = allWey[i][2];
+        if (i + 1 > beginStatus && i < allWey.length - endStatus) {
+            if (nextStatus == 'secondary') {
+                delete(allWey[i]);
+            }
+        }
+    }
+    console.log('next');
+    console.log(allWey);
 }
 function findIdPoint(left, top)
 {
-    for (point in arrayPoints){
+    for (point in arrayPoints) {
         console.log('find ' + point);
         let newLeft = arrayPoints[point][0];
         let newTop = arrayPoints[point][1];
