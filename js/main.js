@@ -3,7 +3,12 @@ let positive = true;
 let staples = "'";
 let localPoint = 11;
 let status = false;
-let cards = [['Propaganda', 3],['Successful PR', 4],['Workday', 3], ['Special order', 4], ['A dishonest deal', 2]];
+let clickCard = false;
+let clicPoint = false;
+let globalLimit = 0;
+let cards = [['Propaganda', 3],['Successful PR', 4],
+['Workday', 3], ['Special order', 4], 
+['A dishonest deal', 2], ['Little hack', 3]];
 let arrayPoints = {
     21: [400, -420, 'main'], 22: [475, -400, 'main'],
     23: [430, -335, 'secondary'], 24: [430, -260, 'secondary'],
@@ -22,11 +27,16 @@ let arrayPoints = {
     4: [450, -1000, 'secondary'], 3: [530, -940, 'secondary'],
     2: [550, -845, 'secondary'], 1: [540, -745, 'secondary']
 };
-function moove(limit) {
+function moove(limit) 
+{   
+    clickCard = true;
+    if (clicPoint && clickCard)  {
+        globalLimit = limit;
+        clicPoint = false;
+    }
     //$('.square-limit').animate({ 'marginTop': '-797px', 'marginLeft': '210px' }, 700)
-    console.log('limit ' + limit);
+    
 }
-
 function initPoints() {
     let i = 1;
     let startLeft = arrayPoints[localPoint][0];
@@ -35,7 +45,7 @@ function initPoints() {
     for (let point in arrayPoints) {
         let left = arrayPoints[point][0];
         let top = arrayPoints[point][1];
-        $('.cont-field').append('<div class="points" id="minus' + i + '" onclick="goPoint(' + left + ',' + top + ' , positive,' + staples + 'minus' + i + staples + ')" style="margin-left: ' + left + 'px; margin-top: ' + top + 'px;"></div>');
+        $('.cont-field').append('<div class="points" id="minus' + i + '" onclick="goPoint(' + staples + 'minus' + i + staples + ')" style="margin-left: ' + left + 'px; margin-top: ' + top + 'px;"></div>');
         i++;
     }
 
@@ -45,31 +55,26 @@ function initPoints() {
     $('.cont-field').append('<div class="points" id="minus3" style="margin-left: 255px; margin-top: -210px;"></div>'); */
 }
 
-function goPoint(left, top, motion, txtId) {
-    let id = txtId.replace(/minus/g, '');
+function goPoint(txtId) {
+    clicPoint = true;
+    if (clicPoint && clickCard) {
+        let id = txtId.replace(/minus/g, '');
 
-    let mrgLeft = $('#' + txtId).css('marginLeft').replace(/px/g, '');
-    let mrgTop = $('#' + txtId).css('marginTop').replace(/px/g, '');
-    let i = 1;
-    //Получаем старые позиции игрока
-    let oldLeft = $('.square-limit').css('marginLeft').replace(/px/g, '');
-    let oldTop = $('.square-limit').css('marginTop').replace(/px/g, '');
-    let oldId = findIdPoint(oldLeft, oldTop);
-    ///console.log('id ' + id + ' localPoint ' + localPoint + '');
-    status = arrayPoints[oldId][2];
-    let newStatus = arrayPoints[id][2];
-    let newWey = getWey(id, localPoint);
-    let iPoint = 0;
+        let newWey = getWey(id, localPoint);
+        if (globalLimit == newWey.length - 1) {
+            for (point in newWey) {
 
-    for (point in newWey) {
-
-        let newLeft = newWey[point][0];
-        let newTop = newWey[point][1];
-        $('.square-limit').animate({ 'marginTop': newTop + 'px', 'marginLeft': newLeft + 'px' }, 700);
-
+                let newLeft = newWey[point][0];
+                let newTop = newWey[point][1];
+                $('.square-limit').animate({ 'marginTop': newTop + 'px', 'marginLeft': newLeft + 'px' }, 700);
+    
+            }
+        } else {
+            console.log('Лимит карты не позволяет')
+        }
+        
+        clicPoint = false;
     }
-
-
 }
 function shuflleCards() 
 {
@@ -89,8 +94,7 @@ function initCards()
     let cards2 = shuflleCards();
     console.log(cards2);
     for (let i = 0; i < cards2.length; i++) {
-        //console.log(card);
-        $('.hand-player').append('<button type="button" id="moove" onclick="moove(' + cards2[i][1] + ')">'+cards2[i][0]+'</button>')
+        $('.hand-player').append('<button type="button" onclick="moove(' + cards2[i][1] + ')">'+cards2[i][0]+'</button>')
     }
     
 }
@@ -175,7 +179,8 @@ function findIdPoint(left, top) {
     }
     return null;
 }
-function start() {
+function start() 
+{
     initPoints();
     initCards();
 }

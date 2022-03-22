@@ -53,6 +53,7 @@ body
 {
     display: grid;
     width:410px;
+    max-height: 700px;
     grid-template-rows: 150px 150px;
     grid-template-columns: 200px 200px;
 }
