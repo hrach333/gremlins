@@ -7,7 +7,7 @@ let arrayPoints = {
                     21:[400, -420, 'main'], 22:[475, -400, 'main'],
                     23:[430, -335, 'secondary'], 24:[430, -260, 'secondary'],
                     25:[525, -310, 'secondary'], 26:[550, -405, 'main'],
-                    27:[630, -405, 'secondary'], 28:[640, -480, 'secondary'],
+                    27:[630, -405, 'main'], 28:[640, -480, 'secondary'],
                     29:[695, -550, 'secondary'], 30:[740, -470, 'secondary'],
                     31:[715, -390, 'main'], 32:[790, -365, 'main'],
                     13:[223, -622, 'secondary'], 14:[135, -580, 'secondary'],
@@ -88,6 +88,7 @@ function getWey(id, point)
     let allWey = [];
     let oldId = id;
     let oldStatus = arrayPoints[id][2];
+    let startStatus = arrayPoints[point + 1][2];
     let now = false;
     while (id > point) {
         point++;
@@ -101,7 +102,13 @@ function getWey(id, point)
         } else {
             endStatus = st;
         }
-        if (status == 'main' && sec == 0 && beginStatus == 0) {
+        if (status == startStatus && beginStatus == 0) {
+            sec++;
+        } else {
+            beginStatus = sec;
+            sec = 0;
+        }
+        /* if (status == 'main' && sec == 0 && beginStatus == 0) {
             mn++;
         } else if (mn >= 1 && status == 'secondary') {
             beginStatus = mn;
@@ -110,7 +117,7 @@ function getWey(id, point)
             sec++;
         } else if (sec >= 1 && status == 'main') {
             beginStatus = sec;
-        }
+        } */
         allWey.push([newLeft, newTop, status]);
         
     }
