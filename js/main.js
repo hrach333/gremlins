@@ -4,8 +4,9 @@ let staples = "'";
 let localPoint = 11;
 let status = false;
 let clickCard = false;
-let clicPoint = false;
+let clickPoint = false;
 let globalLimit = 0;
+let steps = 0;
 let cards = [['Propaganda', 3],['Successful PR', 4],
 ['Workday', 3], ['Special order', 4], 
 ['A dishonest deal', 2], ['Little hack', 3]];
@@ -30,18 +31,20 @@ let arrayPoints = {
 function moove(limit) 
 {   
     clickCard = true;
-    if (clicPoint && clickCard)  {
-        globalLimit = limit;
-        clicPoint = false;
+    globalLimit = limit;
+    console.log('limit ' + limit);
+    console.log('globalLimit ' + globalLimit)
+    if (clickPoint && clickCard)  {        
+        clickCard = false;
     }
     //$('.square-limit').animate({ 'marginTop': '-797px', 'marginLeft': '210px' }, 700)
-    
+    console.log('clickCard ' + clickCard);
 }
 function initPoints() {
     let i = 1;
     let startLeft = arrayPoints[localPoint][0];
     let startTop = arrayPoints[localPoint][1];
-    $('.square-llet').css({ 'marginTop': startTop, 'marginLeft': startLeft });
+    $('.square-limit').css({ 'marginTop': startTop, 'marginLeft': startLeft });
     for (let point in arrayPoints) {
         let left = arrayPoints[point][0];
         let top = arrayPoints[point][1];
@@ -56,12 +59,14 @@ function initPoints() {
 }
 
 function goPoint(txtId) {
-    clicPoint = true;
-    if (clicPoint && clickCard) {
+    clickPoint = true;
+    if (clickPoint && clickCard) {
         let id = txtId.replace(/minus/g, '');
 
         let newWey = getWey(id, localPoint);
-        if (globalLimit == newWey.length - 1) {
+        console.log(newWey);
+        console.log('steps ' + steps);
+        if (globalLimit == steps) {
             for (point in newWey) {
 
                 let newLeft = newWey[point][0];
@@ -73,8 +78,11 @@ function goPoint(txtId) {
             console.log('Лимит карты не позволяет')
         }
         
-        clicPoint = false;
+        clickPoint = false;
+        clickCard = false;
     }
+    console.log('clicPoint ' + clickPoint);
+    console.log('clickCard ' + clickCard)
 }
 function shuflleCards() 
 {
@@ -155,15 +163,17 @@ function getWey(id, point) {
         return allWey;
     }
     let j = 0;
+    let step = 0;
     for (let i = 0; i < allWey.length; i++) {
         let nextStatus = allWey[i][2];
         if (i + 1 > beginStatus && i < allWey.length - endStatus) {
             if (nextStatus == 'secondary') {
                 delete (allWey[i]);
+                step++;
             }
         }
     }
-
+    steps = allWey.length - step;
     localPoint = point - 1;
     return allWey;
 }
