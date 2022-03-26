@@ -67,7 +67,7 @@ function goPoint(txtId) {
         console.log(newWey);
         console.log('steps ' + steps);
         if (globalLimit == steps) {
-            for (point in newWey) {
+            for (let point in newWey) {
 
                 let newLeft = newWey[point][0];
                 let newTop = newWey[point][1];
@@ -79,7 +79,7 @@ function goPoint(txtId) {
         }
         
         clickPoint = false;
-        clickCard = false;
+
     }
     console.log('clicPoint ' + clickPoint);
     console.log('clickCard ' + clickCard)
