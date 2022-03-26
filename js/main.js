@@ -173,7 +173,13 @@ function getWey(id, point) {
             }
         }
     }
-    steps = allWey.length - step;
+    console.log('step ' + step);
+    if (step > 0) {
+        steps = (allWey.length - step)   
+    } else {
+        steps = allWey.length  - 1;
+    }
+
     localPoint = point - 1;
     return allWey;
 }
