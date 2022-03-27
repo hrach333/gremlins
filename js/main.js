@@ -6,6 +6,7 @@ let status = false;
 let clickCard = false;
 let clickPoint = false;
 let globalLimit = 0;
+let globalId = 0;
 let steps = 0;
 let cards = [['Propaganda', 3],['Successful PR', 4],
 ['Workday', 3], ['Special order', 4], 
@@ -35,7 +36,7 @@ function moove(limit)
     console.log('limit ' + limit);
     console.log('globalLimit ' + globalLimit)
     if (clickPoint && clickCard)  {        
-        clickCard = false;
+        moovePlayer();
     }
     //$('.square-limit').animate({ 'marginTop': '-797px', 'marginLeft': '210px' }, 700)
     console.log('clickCard ' + clickCard);
@@ -61,9 +62,22 @@ function initPoints() {
 function goPoint(txtId) {
     clickPoint = true;
     if (clickPoint && clickCard) {
-        let id = txtId.replace(/minus/g, '');
+        globalId = txtId.replace(/minus/g, '');
+        moovePlayer();
 
-        let newWey = getWey(id, localPoint);
+    $.ajax({
+        url : 'http://gremlins.loc/php/index.php',
+        type : 'GET',
+        data: 'test',
+        success: function(data) {
+            console.log('data ' + data);
+        }
+    })
+}
+
+function moovePlayer() 
+{
+    let newWey = getWey(globalId, localPoint);
         console.log(newWey);
         console.log('steps ' + steps);
         if (globalLimit == steps) {
@@ -79,10 +93,9 @@ function goPoint(txtId) {
         }
         
         clickPoint = false;
+        clickCard = false;
 
     }
-    console.log('clicPoint ' + clickPoint);
-    console.log('clickCard ' + clickCard)
 }
 function shuflleCards() 
 {
