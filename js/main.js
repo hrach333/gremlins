@@ -7,10 +7,8 @@ let clickCard = false;
 let clickPoint = false;
 let globalLimit = 0;
 let globalId = 0;
+let dataImages = {};
 let steps = 0;
-let cards = [['Propaganda', 3], ['Successful PR', 4],
-['Workday', 3], ['Special order', 4],
-['A dishonest deal', 2], ['Little hack', 3]];
 let arrayPoints = {
     21: [400, -420, 'main'], 22: [475, -400, 'main'],
     23: [430, -335, 'secondary'], 24: [430, -260, 'secondary'],
@@ -63,17 +61,9 @@ function goPoint(txtId) {
     if (clickPoint && clickCard) {
 
         moovePlayer();
-
-        $.ajax({
-            url: 'http://gremlins.loc/php/index.php',
-            type: 'GET',
-            data: 'test',
-            success: function (data) {
-                console.log('data ' + data);
-            }
-        })
     }
 }
+
 function moovePlayer() {
     let newWey = getWey(globalId, localPoint);
     console.log(newWey);
@@ -98,22 +88,33 @@ function moovePlayer() {
 }
 
 function shuflleCards() {
-    let i = 4;
+
+    $.ajax({
+        url: 'http://gremlins.loc/php/index.php',
+        type: 'GET',
+        data: 'test',
+        success: function (dataJson) {
+            
+            dataImages = JSON.parse(dataJson);
+            console.log('data ' + dataImages);
+        }
+    });
+    let i = dataImages.length;
     while (i > 0) {
         const j = Math.floor(Math.random() * (i + 1));
-        console.log(cards[j]);
-        const temp = cards[i];
-        cards[i] = cards[j];
-        cards[j] = temp;
+        console.log(dataImages[j]);
+        const temp = dataImages[i];
+        dataImages[i] = dataImages[j];
+        dataImages[j] = temp;
         i--;
     }
-    return cards;
+    return dataImages;
 }
 function initCards() {
     let cards2 = shuflleCards();
     console.log(cards2);
-    for (let i = 0; i < cards2.length; i++) {
-        $('.hand-player').append('<button type="button" onclick="moove(' + cards2[i][1] + ')">' + cards2[i][0] + '</button>')
+    for (let i = 0; i < 6; i++) {
+        $('.hand-player').append('<button type="button" onclick="moove(' + cards2[i] + ')">' + cards2[i] + '</button>')
     }
 
 }

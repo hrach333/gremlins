@@ -2,8 +2,25 @@
 namespace App;
 class Cards 
 {
-    public function test () 
+    private $pathCardsImages = '';
+    private $cardsImages = array();
+    private $newCardsImages = array();
+
+    public function __construct($folder)
     {
-        echo 'Hello World';
+        $this->pathCardsImages = $folder;
     }
+
+    public function scanFolder()
+    {
+        $this->cardsImages = scandir($this->pathCardsImages);
+        foreach($this->cardsImages as $cardImage){
+            if ($cardImage != '' && $cardImage != '.' && $cardImage != '..')
+            {
+                $this->newCardsImages[] = $cardImage;
+            }
+        }
+        return $this->newCardsImages;
+    }
+
 }
