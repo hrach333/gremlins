@@ -8,8 +8,8 @@ let clickPoint = false;
 let globalLimit = 0;
 let globalId = 0;
 let steps = 0;
-let cards = [['Propaganda', 3],['Successful PR', 4],
-['Workday', 3], ['Special order', 4], 
+let cards = [['Propaganda', 3], ['Successful PR', 4],
+['Workday', 3], ['Special order', 4],
 ['A dishonest deal', 2], ['Little hack', 3]];
 let arrayPoints = {
     21: [400, -420, 'main'], 22: [475, -400, 'main'],
@@ -29,13 +29,11 @@ let arrayPoints = {
     4: [450, -1000, 'secondary'], 3: [530, -940, 'secondary'],
     2: [550, -845, 'secondary'], 1: [540, -745, 'secondary']
 };
-function moove(limit) 
-{   
+function moove(limit) {
     clickCard = true;
     globalLimit = limit;
-    console.log('limit ' + limit);
     console.log('globalLimit ' + globalLimit)
-    if (clickPoint && clickCard)  {        
+    if (clickPoint && clickCard) {
         moovePlayer();
     }
     //$('.square-limit').animate({ 'marginTop': '-797px', 'marginLeft': '210px' }, 700)
@@ -61,46 +59,47 @@ function initPoints() {
 
 function goPoint(txtId) {
     clickPoint = true;
+    globalId = txtId.replace(/minus/g, '');
     if (clickPoint && clickCard) {
-        globalId = txtId.replace(/minus/g, '');
+
         moovePlayer();
 
-    $.ajax({
-        url : 'http://gremlins.loc/php/index.php',
-        type : 'GET',
-        data: 'test',
-        success: function(data) {
-            console.log('data ' + data);
-        }
-    })
-}
-
-function moovePlayer() 
-{
-    let newWey = getWey(globalId, localPoint);
-        console.log(newWey);
-        console.log('steps ' + steps);
-        if (globalLimit == steps) {
-            for (let point in newWey) {
-
-                let newLeft = newWey[point][0];
-                let newTop = newWey[point][1];
-                $('.square-limit').animate({ 'marginTop': newTop + 'px', 'marginLeft': newLeft + 'px' }, 700);
-    
+        $.ajax({
+            url: 'http://gremlins.loc/php/index.php',
+            type: 'GET',
+            data: 'test',
+            success: function (data) {
+                console.log('data ' + data);
             }
-        } else {
-            console.log('Лимит карты не позволяет')
-        }
-        
-        clickPoint = false;
-        clickCard = false;
-
+        })
     }
 }
-function shuflleCards() 
-{
+function moovePlayer() {
+    let newWey = getWey(globalId, localPoint);
+    console.log(newWey);
+    console.log('steps ' + steps);
+    if (globalLimit == steps) {
+        for (let point in newWey) {
+
+            let newLeft = newWey[point][0];
+            let newTop = newWey[point][1];
+            $('.square-limit').animate({ 'marginTop': newTop + 'px', 'marginLeft': newLeft + 'px' }, 700);
+
+        }
+    } else {
+        console.log('Лимит карты не позволяет');
+        clickPoint = false;
+        clickCard = false;
+    }
+
+    clickPoint = false;
+    clickCard = false;
+
+}
+
+function shuflleCards() {
     let i = 4;
-    while (i > 0) { 
+    while (i > 0) {
         const j = Math.floor(Math.random() * (i + 1));
         console.log(cards[j]);
         const temp = cards[i];
@@ -110,14 +109,13 @@ function shuflleCards()
     }
     return cards;
 }
-function initCards()
-{
+function initCards() {
     let cards2 = shuflleCards();
     console.log(cards2);
     for (let i = 0; i < cards2.length; i++) {
-        $('.hand-player').append('<button type="button" onclick="moove(' + cards2[i][1] + ')">'+cards2[i][0]+'</button>')
+        $('.hand-player').append('<button type="button" onclick="moove(' + cards2[i][1] + ')">' + cards2[i][0] + '</button>')
     }
-    
+
 }
 
 function getWey(id, point) {
@@ -188,9 +186,9 @@ function getWey(id, point) {
     }
     console.log('step ' + step);
     if (step > 0) {
-        steps = (allWey.length - step)   
+        steps = (allWey.length - step)
     } else {
-        steps = allWey.length  - 1;
+        steps = allWey.length - 1;
     }
 
     localPoint = point - 1;
@@ -208,8 +206,7 @@ function findIdPoint(left, top) {
     }
     return null;
 }
-function start() 
-{
+function start() {
     initPoints();
     initCards();
 }
