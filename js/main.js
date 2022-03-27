@@ -125,15 +125,12 @@ function getWey(id, point) {
     //счетчик статусов
     let st = 0;
     let sec = 0;
-    let mn = 0;
     let beginStatus = 0;
     let endStatus = 0;
-    let newWay = [];
     let allWey = [];
     let oldId = id;
     let oldStatus = arrayPoints[id][2];
     let startStatus = arrayPoints[point + 1][2];
-    let now = false;
     while (id > point) {
         point++;
         let newLeft = arrayPoints[point][0];
