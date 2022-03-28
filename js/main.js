@@ -96,7 +96,7 @@ function shuflleCards() {
         success: function (dataJson) {
             
             dataImages = JSON.parse(dataJson);
-            console.log('data ' + dataImages);
+            console.log(dataImages[0]);
         }
     });
     let i = dataImages.length;
