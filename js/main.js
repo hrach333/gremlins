@@ -7,7 +7,7 @@ let clickCard = false;
 let clickPoint = false;
 let globalLimit = 0;
 let globalId = 0;
-let dataImages = {};
+let dataImages;
 let steps = 0;
 let arrayPoints = {
     21: [400, -420, 'main'], 22: [475, -400, 'main'],
@@ -27,6 +27,10 @@ let arrayPoints = {
     4: [450, -1000, 'secondary'], 3: [530, -940, 'secondary'],
     2: [550, -845, 'secondary'], 1: [540, -745, 'secondary']
 };
+/**
+ * Метод получает лимит (ограничение) для хода игрока.
+ * @param {*} limit ограничение хода в цифрах.
+ */
 function moove(limit) {
     clickCard = true;
     globalLimit = limit;
@@ -54,7 +58,10 @@ function initPoints() {
     $('.cont-field').append('<div class="points" id="minus4" style="margin-left: 255px; margin-top: -210px;"></div>');
     $('.cont-field').append('<div class="points" id="minus3" style="margin-left: 255px; margin-top: -210px;"></div>'); */
 }
-
+/**
+ * Метод получает id пнкта куда должен двигатся игрок.
+ * @param {string} txtId 
+ */
 function goPoint(txtId) {
     clickPoint = true;
     globalId = txtId.replace(/minus/g, '');
@@ -63,7 +70,9 @@ function goPoint(txtId) {
         moovePlayer();
     }
 }
-
+/**
+ * Метод создает анимацию из полученых данных.
+ */
 function moovePlayer() {
     let newWey = getWey(globalId, localPoint);
     console.log(newWey);
@@ -86,29 +95,34 @@ function moovePlayer() {
     clickCard = false;
 
 }
-
+/**
+ * Получает список карт и смешивает в новом масиве.
+ * @returns array()
+ */
 function shuflleCards() {
-
+    var data = [];
     $.ajax({
         url: 'http://gremlins.loc/php/index.php',
         type: 'GET',
         data: 'test',
+        async: false,
         success: function (dataJson) {
-            
-            dataImages = JSON.parse(dataJson);
-            console.log(dataImages[0]);
-        }
+
+            data = JSON.parse(dataJson);
+
+        } 
     });
-    let i = dataImages.length;
-    while (i > 0) {
-        const j = Math.floor(Math.random() * (i + 1));
-        console.log(dataImages[j]);
-        const temp = dataImages[i];
-        dataImages[i] = dataImages[j];
-        dataImages[j] = temp;
-        i--;
-    }
-    return dataImages;
+    let i = data.length;
+        while (i > 0) {
+            const j = Math.floor(Math.random() * (i + 1));
+            //console.log(dataImages[j]);
+            const temp = data[i];
+            data[i] = data[j];
+            data[j] = temp;
+            i--;
+        }
+        return data;
+
 }
 function initCards() {
     let cards2 = shuflleCards();
@@ -118,7 +132,12 @@ function initCards() {
     }
 
 }
-
+/**
+ * Создает массив для формирпование короткого пути.
+ * @param {*} id id пункта куда нужно двигатся
+ * @param {*} point пункт где находится игрок
+ * @returns 
+ */
 function getWey(id, point) {
     //secondary
     console.log('id: ' + id);
@@ -192,6 +211,12 @@ function getWey(id, point) {
     localPoint = point - 1;
     return allWey;
 }
+/**
+ * Поиск id пункта по кординатам
+ * @param {*} left левый сдвиг
+ * @param {*} top верхний сдвиг
+ * @returns 
+ */
 function findIdPoint(left, top) {
     for (point in arrayPoints) {
         let newLeft = arrayPoints[point][0];

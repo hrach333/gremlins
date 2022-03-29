@@ -34,7 +34,7 @@ class Cards
                 if ($startNumper <= 9) $card = preg_replace('/\./', '_00' . $startNumper.'.', $nameCard);
                 if ($startNumper > 9 && $startNumper <= 99) $card = preg_replace('/\./', '_0' . $startNumper.'.', $nameCard);
                 if ($startNumper > 99) $card = preg_replace('/\./', '_' . $startNumper.'.', $nameCard);
-                rename($this->pathCardsImages.'/'.$this->newCardsImages[$startNumper - 1], $this->pathCardsImages.'/'.$card);
+                //rename($this->pathCardsImages.'/'.$this->newCardsImages[$startNumper - 1], $this->pathCardsImages.'/'.$card);
                 $newRenameCards[] = $card;
                 $startNumper++;
             }
