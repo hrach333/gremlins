@@ -27,6 +27,10 @@ let arrayPoints = {
     4: [450, -1000, 'secondary'], 3: [530, -940, 'secondary'],
     2: [550, -845, 'secondary'], 1: [540, -745, 'secondary']
 };
+let dataCards = [
+    [3, 'Ofise',{'cost': 50}, {'vote' : 3}],
+    [1, 'Ofise', {'vote': 3}, {'null': 0}]
+];
 /**
  * Метод получает лимит (ограничение) для хода игрока.
  * @param {*} limit ограничение хода в цифрах.
@@ -95,23 +99,33 @@ function moovePlayer() {
     clickCard = false;
 
 }
-/**
- * Получает список карт и смешивает в новом масиве.
- * @returns array()
- */
-function shuflleCards() {
-    var data = [];
+function getCards(callback)
+{
     $.ajax({
         url: 'http://gremlins.loc/php/index.php',
         type: 'GET',
         data: 'test',
-        async: false,
-        success: function (dataJson) {
-
-            data = JSON.parse(dataJson);
-
-        } 
+        //async: false,
+        success: callback
     });
+}
+/**
+ * Получает список карт и смешивает в новом масиве.
+ * @returns array()
+ */
+function shuflleCards(data) {
+/*     var data = [];
+    $.ajax({
+        url: 'http://gremlins.loc/php/index.php',
+        type: 'GET',
+        data: 'test',
+        //async: false,
+        success: function (dataJson) {
+            let dt = JSON.parse(dataJson);
+            initCards(dt);
+
+        }
+    }); */
     let i = data.length;
         while (i > 0) {
             const j = Math.floor(Math.random() * (i + 1));
@@ -121,15 +135,23 @@ function shuflleCards() {
             data[j] = temp;
             i--;
         }
-        return data;
+    return data;
 
 }
+/**
+ * Иницилизируем карты
+ */
 function initCards() {
-    let cards2 = shuflleCards();
-    console.log(cards2);
-    for (let i = 0; i < 6; i++) {
-        $('.hand-player').append('<button type="button" onclick="moove(' + cards2[i] + ')">' + cards2[i] + '</button>')
-    }
+    getCards(function(data){
+        let dt = JSON.parse(data);
+        dataImages = shuflleCards(dt);
+        console.log(dataImages);
+        for (let i = 0; i < 6; i++) {
+            $('.hand-player').append('<button type="button" onclick="moove(' + dataImages[i] + ')">' + dataImages[i] + '</button>')
+        }
+        //callback(data);
+
+    });   
 
 }
 /**
