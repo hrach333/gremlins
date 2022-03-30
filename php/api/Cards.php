@@ -1,6 +1,5 @@
 <?php
-
-namespace App;
+namespace Api;
 
 class Cards
 {
@@ -42,5 +41,10 @@ class Cards
         } else {
             return null;
         }
+    }
+
+    public function actionCard($action)
+    {
+        
     }
 }

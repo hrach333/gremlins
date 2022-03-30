@@ -27,9 +27,17 @@ let arrayPoints = {
     4: [450, -1000, 'secondary'], 3: [530, -940, 'secondary'],
     2: [550, -845, 'secondary'], 1: [540, -745, 'secondary']
 };
+//vote голос
+//cost деньги
+//malignancy
+//gear шестерня основной ресурс
 let dataCards = [
-    [3, 'Ofise',{'cost': 50}, {'vote' : 3}],
-    [1, 'Ofise', {'vote': 3}, {'null': 0}]
+    [3, 'Ofise',{'cost': 50}, {'vote' : 3}, {'action': null}],
+    [1, 'Ofise', {'vote': 3}, {'malignancy': 2}, {'action' : {'gear': '3'}}],
+    [4, 'Trouble', {'not':0}, {'not': 0}, {'action' : {'array':'trable'}}],
+    [1, 'Prison', {'cost' : 100, 'vote' : 3}, {'not': 0}, {'action' : 'not'}],
+    [2, 'Prison', {'not': 0}, {'malignancy': 1}, {'action' : {'teleport' : 24}}],
+    [1, 'Prison', {'not': 0}, {'malignancy': 2}, {'action' : {'teleport' : 24}}],
 ];
 /**
  * Метод получает лимит (ограничение) для хода игрока.
