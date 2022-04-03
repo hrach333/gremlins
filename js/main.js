@@ -33,7 +33,7 @@ let arrayPoints = {
 //gear шестерня основной ресурс
 let dataCards = [
     [3, 'Ofise',{'cost': 50}, {'vote' : 3}, {'action': null}],
-    [1, 'Ofise', {'vote': 3}, {'malignancy': 2}, {'action' : {'gear': '3'}}],
+    [1, 'Ofise', {'vote': 3}, {'malignancy': 2}, {'action' : ['get', 3]}],
     [4, 'Trouble', {'not':0}, {'not': 0}, {'action' : {'array':'trable'}}],
     [1, 'Prison', {'cost' : 100, 'vote' : 3}, {'not': 0}, {'action' : 'not'}],
     [2, 'Prison', {'not': 0}, {'malignancy': 1}, {'action' : {'teleport' : 24}}],

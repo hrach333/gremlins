@@ -10,7 +10,7 @@ class PlayerController extends Controller
     ['idPlayer' => 2, 'name' => 'Boris'],
     ['idPlayer' => 3, 'name' => 'Vor']];
 
-    private View $view;
+    private  $view;
     public function __construct($request = null)
     {
         if ($request != null && !empty($request)) {
