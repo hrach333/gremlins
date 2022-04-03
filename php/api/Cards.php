@@ -6,10 +6,11 @@ class Cards
     private $pathCardsImages = '';
     private $cardsImages = array();
     private $newCardsImages = array();
-
+    private $players;
     public function __construct($folder)
     {
         $this->pathCardsImages = $folder;
+        $this->players =  new PlayerController();
     }
 
     public function scanFolder()
@@ -42,9 +43,40 @@ class Cards
             return null;
         }
     }
+    private function movingResource($resurs, $playerOne, $playerTwo, $num)
+    {
+        switch ($resurs){
+            case 'cost' :
+                $idResurs = 0;
+                break;
+            case 'vote' :
+                $idResurs = 1;
+                break;
+            case 'malicious' :
+                $idResurs = 2;
+                break;
+            case 'gears' :
+                $idResurs = 3;
+                break;
+            default :
+                $idResurs = false;
 
+        }
+        $resursPlayers = $players->getResursPlayers();
+        $numResursPlayerOne = $resursPlayers[$playerOne][$idResurs];
+        $numResursPlayerTwo = $resursPlayers[$playerTwo][$idResurs];
+        $newResursPlayerOne = $numResursPlayerOne - $num;
+        $newResursPlayerTwo = $numResursPlayerTwo + $num;
+        $resursPlayers[$playerOne][$idResurs] = $newResursPlayerOne;
+        $resursPlayers[$playerTwo][$idResurs] = $newResursPlayerTwo;
+    }
     public function actionCard($action)
     {
-        
+        if (isset($_POST['resurs'])) {
+            $resurs = $_POST['resurs'];
+        }
+        if ($action = 'getGearsFromPlayer') {
+            $this->movingResource();
+        }
     }
 }

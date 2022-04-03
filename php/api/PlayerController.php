@@ -9,7 +9,9 @@ class PlayerController extends Controller
     ['idPlayer' => 1, 'name' => 'Trus'],
     ['idPlayer' => 2, 'name' => 'Boris'],
     ['idPlayer' => 3, 'name' => 'Vor']];
-
+    private $resurs = [1 => [200, 0, 0, 0],
+    2 => [200, 0, 0, 0],
+    3 => [200, 0, 0, 0]];
     private  $view;
     public function __construct($request = null)
     {
@@ -18,7 +20,10 @@ class PlayerController extends Controller
         }
         $this->view = new View();
     }
-
+    public function getResursPlayers()
+    {
+        return $this->resurs;
+    }
     public function index()
     {
         $data = ['team' => 'player', 'scene' => 'office'];
