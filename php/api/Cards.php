@@ -62,11 +62,19 @@ class Cards
                 $idResurs = false;
 
         }
-        $resursPlayers = $players->getResursPlayers();
+        $resursPlayers = $this->players->getResursPlayers();
+        //получаем последние ресурсы
         $numResursPlayerOne = $resursPlayers[$playerOne][$idResurs];
         $numResursPlayerTwo = $resursPlayers[$playerTwo][$idResurs];
+        //проводим операцию с ресурсом
         $newResursPlayerOne = $numResursPlayerOne - $num;
         $newResursPlayerTwo = $numResursPlayerTwo + $num;
+        if ($newResursPlayerOne < 0) {
+            $newResursPlayerOne = 0;
+        }
+        if ($newResursPlayerTwo < 0) {
+            $newResursPlayerTwo = 0;
+        }
         $resursPlayers[$playerOne][$idResurs] = $newResursPlayerOne;
         $resursPlayers[$playerTwo][$idResurs] = $newResursPlayerTwo;
     }
